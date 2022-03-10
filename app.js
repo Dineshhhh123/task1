@@ -1,4 +1,6 @@
 var express = require("express");
+const session = require('express-session');
+const path = require('path');
 var app = express();
 app.set("view engine", "ejs");
 passport = require("passport");
@@ -66,39 +68,47 @@ app.use(passport.session());
 		res.render('secret');
 		
 	});
+	app.use(session({
+		secret: 'secret',
+		resave: true,
+		saveUninitialized: true
+	}));
+	app.use(express.json());
+	app.use(express.urlencoded({ extended: true }));
+	app.use(express.static(path.join(__dirname, 'static')));
 	
 	//Showing login form
 	app.get("/login", function (req, res) {
 		res.render("login");
 	});
-	
-	app.post("/login", function (req, res) {
-		var username = req.body.username
-		var password = req.body.password
-		MongoClient.connect(uri,function(err,db){
-
-		      var dbmy = db.db('mydbfirst');
-			  var mydata;
-			
-			
-	        dbmy.collection('webusers')
-				if(err) throw err;
-				
-				db.close();
-		    const findResult = dbmy.find({
-			   username:username,password:password
-
-			
+	app.post('/login', function(request, response) {
 		
-	         });
+		let username = request.body.username;
+		let password = request.body.password;
+		
+		if (username && password) {
+			
+			MongoClient.connect(uri,function(err,db){
+				
+				if (err) throw error;
+				
+				if (username && password == true) {
+					// Authenticate the user
+					request.session.loggedin = true;
+					request.session.username = username;
+					// Redirect to secret page
+					response.redirect('secret');
+				} else {
+					response.send('Incorrect Username and/or Password!');
+				}			
+				response.end();
 			});
-          res.render('secret');
-
-
-
-		//successRedirect: "/secret",
-		//failureRedirect: "/login"
+		} else {
+			response.send('Please enter Username and Password!');
+			response.end();
+		}
 	});
+	
 
 	app.get("/logout", function (req, res) {
 		req.logout();
