@@ -11,17 +11,7 @@ LocalStrategy = require("passport-local");
 const { MongoClient, ServerApiVersion } = require('mongodb');
 
 const uri = 'mongodb+srv://kumar:dk123@cluster0.hg9p0.mongodb.net/myFirstDatabase?retryWrites=true&w=majority';
-	//MongoClient.connect(uri,function(err,db){
-		//if(err) throw err;
 	
-		//var dbmy = db.db('mydbfirst');
-		//var mydata = {name:'dinesh',password:'Dinesh@123'};
-		//dbmy.collection('webusers').insertOne(mydata,function(err,res){
-			//if(err) throw err;
-			//console.log('Document inserted')
-			//db.close();
-		//});
-	//});
 	
 app.use(bodyParser.urlencoded({ extended: true }));
 
@@ -81,13 +71,7 @@ app.use(passport.session());
 	app.get("/login", function (req, res) {
 		res.render("login");
 	});
-	//const findResult = await orders.find({
-		//name: "Lemony Snicket",
-		//date: {
-		  //$gte: new Date(new Date().setHours(00, 00, 00)),
-		  //$lt: new Date(new Date().setHours(23, 59, 59)),
-		//},
-	  //});
+	
 	app.post("/login", function (req, res) {
 		var username = req.body.username
 		var password = req.body.password
@@ -130,13 +114,3 @@ var port = process.env.PORT || 3000;
 app.listen(port, function () {
 	console.log("Server Has Started!");
 });
-//mydata.register(new mydata({ username: username }),
-				//password, function (err, user) {
-			//if (err) {
-				//console.log(err);
-				//return res.render("register");
-			//}
-	
-			
-			//});
-		//});
