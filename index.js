@@ -5,7 +5,7 @@ var express = require('express'),
   port = process.env.PORT || 3001,
 
 
-  User = require('./models/userModel'),
+  User = require('./models/validate'),
   bodyParser = require('body-parser'),
   jsonwebtoken = require("jsonwebtoken");
 
